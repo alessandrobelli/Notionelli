@@ -8,12 +8,12 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node test.js"
+    "start": "node index.js"
   },
   "author": "Alessandro Belli",
   "license": "MIT",
   "dependencies": {
-    "@notionhq/client": "^0.2.3",
+    "@notionhq/client": "^0.4.11",
     "dotenv": "^10.0.0",
     "moment": "^2.29.1"
   }

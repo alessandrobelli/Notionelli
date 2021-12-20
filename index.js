@@ -55,8 +55,7 @@ async function fillWeeks(momentName, weekBefore, monthBefore, actualMonth) {
         date:
         {
           "start": momentName.toISOString(true),
-          "end": momentName.clone().add(6, 'd').toISOString(true),
-          "time_zone": "Europe/Amsterdam"
+          "end": momentName.clone().add(6, 'd').toISOString(true)
         },
 
       },
