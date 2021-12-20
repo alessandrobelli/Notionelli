@@ -1,8 +1,9 @@
 # PREFILL YOUR WEEK DATABASE 🗓️
 
-Use this to create any week page in your Notion database.
+Use this to create your week pages in your Notion database.
 
 ## Requirements
+- Node JS installed in your computer.
 - Create a Notion Extension
 - Create a .env file with the following 
   - NOTION_DATABASE_WEEKS
