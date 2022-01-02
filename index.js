@@ -2,6 +2,8 @@ const readline = require("readline");
 const { Client } = require("@notionhq/client")
 const dotenv = require("dotenv")
 const moment = require("moment");
+const { abort } = require("process");
+const { months } = require("moment");
 
 dotenv.config()
 
@@ -31,55 +33,60 @@ async function populateDB(start, end, weekBefore) {
 }
 
 async function fillWeeks(momentName, weekBefore, monthBefore, actualMonth) {
-  return await notion.pages.create({
-    parent: {
-      database_id: databaseId,
-    },
-    icon: {
+
+  let createWeekPage = {};
+  createWeekPage.parent = {
+    database_id: databaseId,
+  };
+  if (iconToAdd !== "") {
+    createWeekPage.icon = {
       type: "external",
       external: {
         url: iconToAdd
       }
-    },
-    properties: {
-      Name: {
-        title: [
-          {
-            text: {
-              content: (momentName.format("MMM") === momentName.clone().add(6, 'd').format("MMM")) ? momentName.format('D') + " - " + momentName.clone().add(6, 'd').format('D') + " " + momentName.clone().add(6, 'd').format("MMM") : momentName.format('D') + " " + momentName.format("MMM") + " - " + momentName.clone().add(6, 'd').format('D') + " " + momentName.clone().add(6, 'd').format("MMM"),
-            },
-          },
-        ],
-      },
-      [process.env.DATES_NAME]: {
-        date:
+    };
+  }
+  if (process.env.WEEK_BEFORE_NAME !== "") {
+    createWeekPage.properties[process.env.WEEK_BEFORE_NAME] = {
+      relation: [{
+        "id": weekBefore
+      }]
+    };
+  }
+
+  createWeekPage.properties = {
+    Name: {
+      title: [
         {
-          "start": momentName.toISOString(true),
-          "end": momentName.clone().add(6, 'd').toISOString(true)
+          text: {
+            content: (momentName.format("MMM") === momentName.clone().add(6, 'd').format("MMM")) ? momentName.format('D') + " - " + momentName.clone().add(6, 'd').format('D') + " " + momentName.clone().add(6, 'd').format("MMM") : momentName.format('D') + " " + momentName.format("MMM") + " - " + momentName.clone().add(6, 'd').format('D') + " " + momentName.clone().add(6, 'd').format("MMM"),
+          },
         },
-
-      },
-      [process.env.WEEK_BEFORE_NAME]: {
-        relation: [{
-          "id": weekBefore
-        }]
-
-      },
-      [process.env.MONTH_NAME]: {
-        relation: [{
-          "id": monthBefore.id
-        }, {
-          "id": actualMonth.id
-        }]
-      }
+      ],
     },
-    children: [],
-  });
+    [process.env.DATES_NAME]: {
+      date:
+      {
+        "start": momentName.toISOString(true),
+        "end": momentName.clone().add(6, 'd').toISOString(true)
+      },
+
+    },
+    [process.env.MONTH_NAME]: {
+      relation: [{
+        "id": monthBefore.id
+      }, {
+        "id": actualMonth.id
+      }]
+    }
+  };
+
+  return await notion.pages.create(createWeekPage);
 }
 
 async function getMonth(monthName, year) {
   const databaseId = databaseIdMonths;
-  return await notion.databases.query({
+  let month = await notion.databases.query({
     database_id: databaseId,
     filter: {
       "property": "Name",
@@ -88,4 +95,25 @@ async function getMonth(monthName, year) {
       }
     }
   });
+
+  if (month.results.length === 0) {
+    month.results.push(await notion.pages.create({
+      parent: {
+        database_id: databaseIdMonths
+      },
+      properties: {
+        Name: {
+          title: [
+            {
+              text: {
+                content: monthName + " " + year,
+              },
+            },
+          ],
+        },
+      }
+    }));
+  }
+
+  return month;
 }
