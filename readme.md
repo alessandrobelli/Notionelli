@@ -1,6 +1,7 @@
 # PREFILL YOUR WEEK DATABASE 🗓️
 
-Use this to create your week pages in your Notion database.
+Use this to create your week and months pages in your Notion database.
+This is meant to fill the calendar for you to just create the daily pages.
 
 
 ## Requirements
@@ -13,9 +14,12 @@ Use this to create your week pages in your Notion database.
   - ICON : the url of the icon you want to use
   - LAST_WEEK_2021_ID : the last week of 2021
   - DATES_NAME* : the name of the dates property in your week database
-  - WEEK_BEFORE_NAME : the name of the "week before" property in your week database
+  - WEEK_BEFORE_NAME : the name of the "week before" property in your week database - not mondatory
   - MONTH_NAME* : the name of the month property in your week database
-- Months database with prefilled months in the format "Month name + year" (January 2022) - creating missing months coming soon!
+  - EMOJI : the emoji you want to use in the week database. ICON must be empty for this to work.
+  - YEAR_NAME: the name of the year property in your month database
+  - DATABASE_YEARS_ID: the id of your years database
+- Months database with prefilled months in the format "Month name + year" (January 2023). The script tries to create missing months and attached it to the next year. You need to create the year in advance.
 - Weeks database with the following properties:
   - `dates` with the type date
   - `month` as a relationship to your month database
