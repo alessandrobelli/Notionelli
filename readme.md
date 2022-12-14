@@ -7,13 +7,15 @@ This is meant to fill the calendar for you to just create the daily pages.
 ## Requirements
 - [Node Js](https://nodejs.org/it/) installed in your computer.
 - [Create a Notion Integration](https://www.notion.so/my-integrations)
+- Your Year database *must* have next year already created.
+- You don't need to have the months created in advance, the script will create them for you.
 - Create a .env file, or use the empty copy provided, customizing the following 
   - NOTION_DATABASE_WEEKS* : the id of your empty weeks database
   - NOTION_DATABASE_MONTHS* : the id of your months database
   - NOTION_KEY* : your notion secret
   - ICON : the url of the icon you want to use
   - LAST_WEEK_2021_ID : the last week of 2021
-  - DATES_NAME* : the name of the dates property in your week database
+  - DATES_NAME* : the name of the dates property in your week and month database
   - WEEK_BEFORE_NAME : the name of the "week before" property in your week database - not mondatory
   - MONTH_NAME* : the name of the month property in your week database
   - EMOJI : the emoji you want to use in the week database. ICON must be empty for this to work.
